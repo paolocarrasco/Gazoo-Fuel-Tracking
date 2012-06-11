@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="vehicleService" class="pe.com.abaris.gazoo.services.VehicleServiceImpl">
+        <property name="vehicleValidator" ref="vehicleValidator" />
+    </bean>
+    <bean id="vehicleManager" class="pe.com.abaris.gazoo.ws.vehicle.VehicleCollectionManagerImpl">
+        <property name="vehicleService" ref="vehicleService" />
+    </bean>
+    <bean id="vehicleValidator" class="pe.com.abaris.gazoo.services.VehicleValidator" />
+</beans>

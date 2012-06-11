@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="errorMapLoader" class="pe.com.abaris.gazoo.exceptions.ErrorMapLoader">
+        <constructor-arg>
+            <map key-type="pe.com.abaris.gazoo.exceptions.ErrorType">
+                <entry key="DEFAULT"
+                    value="A general error occurred." />
+                <entry key="ARGUMENTS"
+                    value="There was an error with the arguments passed to the method." />
+                <entry key="CONNECTION"
+                    value="It wasn't possible to establish a successful connection." />
+                <entry key="DATASOURCE"
+                    value="We found an error when dealing with some of the data sources." />
+            </map>
+        </constructor-arg>
+    </bean>
+</beans>
