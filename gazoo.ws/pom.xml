@@ -220,5 +220,6 @@
     <scm>
         <url>scm:git:git@github.com:paolocarrasco/Gazoo-Fuel-Tracking.git</url>
         <connection>scm:git:git@github.com:paolocarrasco/Gazoo-Fuel-Tracking.git</connection>
+        <developerConnection>scm:git:git@github.com:paolocarrasco/Gazoo-Fuel-Tracking.git</developerConnection>
     </scm>
 </project>
