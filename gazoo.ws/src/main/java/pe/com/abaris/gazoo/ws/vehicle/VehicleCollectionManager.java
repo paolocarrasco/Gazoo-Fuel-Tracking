@@ -1,42 +1,29 @@
 package pe.com.abaris.gazoo.ws.vehicle;
 
 
-import java.util.List;
-
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBElement;
 
 import pe.com.abaris.gazoo.model.Vehicle;
+import pe.com.abaris.gazoo.ws.ResourceManager;
 
 /**
  * Interface: VehicleCollectionManager
  * is the API contract for the management of vehicle collections.
  */
-public interface VehicleCollectionManager {
-    /**
-     * Method: register
-     * creates the given vehicle.
-     * 
-     * Parameters:
-     *  owner - is the user that owns the vehicle
-     *  vehicle - is the vehicle to be registered.
-     * 
-     * Returns:
-     *  a response with the URI of the new vehicle, if everything goes fine;
-     *  otherwise, a response with the error.
-     */
-    Response register(JAXBElement<Vehicle> vehicle);
+public interface VehicleCollectionManager extends ResourceManager<Vehicle> {
 
     /**
      * Method: search
-     * lists the vehicles that matches the given filter.
+     * lists the vehicles that matches the given filters.
      * 
      * Parameters:
-     *  owner - is the user that owns the vehicles
-     *  filters - is the list of restrictions for the search.
+     *  make - is the make of the vehicle.
+     *  model - is the model of the vehicle.
+     *  year - is the year of the vehicle.
+     *  color - is the color of the vehicle.
      * 
      * Returns:
-     *  a response with the collection of vehicles that matches the search.
+     *  a response with the collection of vehicles that matches the filters.
      */
-    Response search(List<String> filters);
+    Response search(String make, String model, String year, String color);
 }

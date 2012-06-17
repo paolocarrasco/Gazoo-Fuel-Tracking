@@ -24,5 +24,11 @@ public enum ErrorType {
      * Const: DATASOURCE
      * is an error when dealing with a data source.
      */
-    DATASOURCE
+    DATASOURCE,
+    /**
+     * Const: DUPLICATION
+     * is an error when performing an operation and it's duplicated.
+     * 
+     */
+    DUPLICATION
 }

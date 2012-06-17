@@ -1,7 +1,9 @@
 package pe.com.abaris.gazoo.services;
 
 import static pe.com.abaris.gazoo.exceptions.ErrorType.ARGUMENTS;
+import static pe.com.abaris.gazoo.exceptions.ErrorType.DUPLICATION;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,8 @@ import pe.com.abaris.gazoo.model.Vehicle;
  * Class: VehicleServiceImpl
  * contains the main logic for the vehicle
  */
+// TODO analyze wisely when to throw exceptions
+// TODO (throwing every problem as exception is not a good practice at all)
 public class VehicleServiceImpl implements VehicleService {
 
     private final Map<String, Vehicle> vehicles = new HashMap<String, Vehicle>();
@@ -34,7 +38,7 @@ public class VehicleServiceImpl implements VehicleService {
         }
         if (vehicles.containsKey(name.trim())) {
             throw new GazooException(String.format(
-                    "The vehicle %s was registered before", name), ARGUMENTS);
+                    "The vehicle %s was registered before", name), DUPLICATION);
         }
         // TODO maybe we could move this into another class to nullify the empty
         // values by reflection (decreasing a little bit the performance)
@@ -65,15 +69,25 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void delete(final String id) {
-        // TODO Auto-generated method stub
-
+    public void delete(final String vehicleName) {
+        if (vehicles.containsKey(vehicleName)) {
+            vehicles.remove(vehicleName);
+        }
+        else {
+            throw new GazooException(
+                    "The vehicle name wasn't registered before", ARGUMENTS);
+        }
     }
 
     @Override
-    public List<Vehicle> search(final List<Filter> filters) {
-        // TODO Auto-generated method stub
-        return null;
+    public Vehicle get(final String id) {
+        return vehicles.get(id);
+    }
+
+    @Override
+    public List<Vehicle> search(final String make, final String model,
+            final String year, final String color) {
+        return Arrays.asList(vehicles.values().toArray(new Vehicle[0]));
     }
 
     public EntityValidator<Vehicle> getVehicleValidator() {
@@ -84,4 +98,5 @@ public class VehicleServiceImpl implements VehicleService {
             final EntityValidator<Vehicle> vehicleValidator) {
         this.vehicleValidator = vehicleValidator;
     }
+
 }

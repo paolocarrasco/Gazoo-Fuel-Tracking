@@ -1,7 +1,5 @@
 package pe.com.abaris.gazoo.ws;
 
-import java.util.List;
-
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 
@@ -57,14 +55,14 @@ public interface ResourceManager<T extends BaseEntity<?>> {
     Response delete(String id);
 
     /**
-     * Method: search
-     * lists the items that matches the given filter.
+     * Method get
+     * brings the item identified by the given ID.
      * 
      * Parameters:
-     *  filters - is the list of restrictions for the search.
-     * 
-     * Returns:
-     *  a response with the collection of items that matches the search.
+     *  id - is the ID of the item to retrieve.
+     *  
+     *  Returns:
+     *   a response with the item identified by the ID.
      */
-    Response search(List<String> filters);
+    Response get(String id);
 }

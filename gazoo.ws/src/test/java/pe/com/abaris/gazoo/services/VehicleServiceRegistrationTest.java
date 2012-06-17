@@ -22,16 +22,14 @@ import pe.com.abaris.gazoo.model.Vehicle;
 @RunWith(MockitoJUnitRunner.class)
 public class VehicleServiceRegistrationTest {
 
-    
-    
     /**
      * Variable: vehicleService
      * is the target of the test
      */
     @Spy
-    private VehicleServiceImpl vehicleService = new VehicleServiceImpl();
-    
-    private EntityValidator<Vehicle> vehicleValidator = new VehicleValidator();
+    private final VehicleServiceImpl vehicleService = new VehicleServiceImpl();
+
+    private final EntityValidator<Vehicle> vehicleValidator = new VehicleValidator();
 
     @Before
     public void setUp() throws Exception {
