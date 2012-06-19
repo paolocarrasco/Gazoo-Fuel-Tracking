@@ -5,12 +5,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import pe.com.abaris.gazoo.exceptions.GazooException;
 import pe.com.abaris.gazoo.model.Vehicle;
@@ -19,34 +14,18 @@ import pe.com.abaris.gazoo.model.Vehicle;
  * Class: VehicleServiceRegistrationTest
  * tests the functionality of the registration of the VehicleServiceImpl class.
  */
-@RunWith(MockitoJUnitRunner.class)
-public class VehicleServiceRegistrationTest {
-
-    /**
-     * Variable: vehicleService
-     * is the target of the test
-     */
-    @Spy
-    private final VehicleServiceImpl vehicleService = new VehicleServiceImpl();
-
-    private final EntityValidator<Vehicle> vehicleValidator = new VehicleValidator();
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        vehicleService.setVehicleValidator(vehicleValidator);
-    }
+public class VehicleServiceRegistrationTest extends AbstractVehicleServiceTest {
 
     @Test
     public void register() {
         // creating the valid vehicle
         final Vehicle vehicle = new Vehicle();
-        // Setting the mandatory properties
-        vehicle.setOwner("testowner");
-        vehicle.setName("validName");
-        vehicle.setInitialMileage(9400);
+        // setting the mandatory properties
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
 
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
 
         assertThat("an ID should be generated", vehicle.getId(),
                 is(notNullValue()));
@@ -56,25 +35,25 @@ public class VehicleServiceRegistrationTest {
     public void registerTwoDifferentVehicles() {
         // creating a vehicle...
         final Vehicle vehicleA = new Vehicle();
-        vehicleA.setOwner("testowner");
-        vehicleA.setName("nameA");
-        vehicleA.setInitialMileage(5000);
-        vehicleA.setMake("Toyoba");
-        vehicleA.setModel("Laris");
+        vehicleA.setOwner(VEHICLE_OWNER);
+        vehicleA.setName(VEHICLE_NAME + "A");
+        vehicleA.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicleA.setMake(VEHICLE_MAKE);
+        vehicleA.setModel(VEHICLE_MODEL);
 
         // registering the vehicle
-        vehicleService.register(vehicleA);
+        getVehicleService().register(vehicleA);
 
         // creating another vehicle...
         final Vehicle vehicleB = new Vehicle();
-        vehicleB.setOwner("testowner");
-        vehicleB.setName("nameB");
-        vehicleB.setInitialMileage(5000);
-        vehicleB.setMake("Revault");
-        vehicleB.setModel("Trio");
+        vehicleB.setOwner(VEHICLE_OWNER);
+        vehicleB.setName(VEHICLE_NAME + "B");
+        vehicleB.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicleB.setMake(ANOTHER_VEHICLE_MAKE);
+        vehicleB.setModel(ANOTHER_VEHICLE_MODEL);
 
         // trying to register the another vehicle
-        vehicleService.register(vehicleB);
+        getVehicleService().register(vehicleB);
     }
 
     @Test(expected = GazooException.class)
@@ -82,10 +61,10 @@ public class VehicleServiceRegistrationTest {
         // creating the indie vehicle
         final Vehicle vehicle = new Vehicle();
         // not setting the owner of the vehicle
-        vehicle.setColor("blue");
-        vehicle.setInitialMileage(9400);
+        vehicle.setColor(VEHICLE_COLOR);
+        vehicle.setInitialMileage(500);
 
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
@@ -93,83 +72,83 @@ public class VehicleServiceRegistrationTest {
         // creating the unnamely vehicle
         final Vehicle vehicle = new Vehicle();
         // not setting the name of the vehicle
-        vehicle.setOwner("testowner");
-        vehicle.setColor("blue");
-        vehicle.setInitialMileage(9400);
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setColor(VEHICLE_COLOR);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
 
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenInitialMileageIsNotSet() {
         // creating the vehicle whose mileage went beyond borders
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("theName");
-        vehicle.setMake("Toyoba");
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setMake(VEHICLE_MAKE);
 
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenVehicleIsNull() {
         // registering a null vehicle
-        vehicleService.register(null);
+        getVehicleService().register(null);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenNameWasRegisteredBefore() {
         // creating a vehicle...
         final Vehicle vehicleA = new Vehicle();
-        vehicleA.setOwner("testowner");
-        vehicleA.setName("theName");
-        vehicleA.setInitialMileage(5000);
-        vehicleA.setMake("Toyoba");
-        vehicleA.setModel("Laris");
+        vehicleA.setOwner(VEHICLE_OWNER);
+        vehicleA.setName(VEHICLE_NAME);
+        vehicleA.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicleA.setMake(VEHICLE_MAKE);
+        vehicleA.setModel(VEHICLE_MODEL);
 
         // registering the vehicle
-        vehicleService.register(vehicleA);
+        getVehicleService().register(vehicleA);
 
         // creating another vehicle with the same name...
         final Vehicle vehicleB = new Vehicle();
-        vehicleB.setOwner("testowner");
-        vehicleB.setName("theName");
-        vehicleB.setInitialMileage(5000);
-        vehicleB.setMake("Revault");
-        vehicleB.setModel("Trio");
+        vehicleB.setOwner(VEHICLE_OWNER);
+        vehicleB.setName(VEHICLE_NAME);
+        vehicleB.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicleB.setMake(ANOTHER_VEHICLE_MAKE);
+        vehicleB.setModel(ANOTHER_VEHICLE_MODEL);
 
         // trying to register a vehicle with the same name
-        vehicleService.register(vehicleB);
+        getVehicleService().register(vehicleB);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenColorContainsNonAlphanumericChars() {
         // creating the vehicle with hippie colors
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("theName");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         // a valid color should contain just alphanumeric chars
         vehicle.setColor("!@");
 
         // registering the vehicle with an invalid color
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test
     public void shouldAcceptColorAsNullWhenColorIsEmpty() {
         // creating the transparent vehicle
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("theName");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         // setting the color as empty
         vehicle.setColor(" ");
 
         // registering the vehicle with an invalid color
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
 
         assertThat("the color should be null now", vehicle.getColor(),
                 is(nullValue()));
@@ -179,90 +158,90 @@ public class VehicleServiceRegistrationTest {
     public void shouldThrowAnErrorWhenNameContainsSpaces() {
         // creating the spaceship
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
+        vehicle.setOwner(VEHICLE_OWNER);
         // a valid name should contain just alphanumeric chars
-        vehicle.setName("the name");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setName("an evil name");
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         vehicle.setColor("red");
 
         // registering the vehicle with an invalid name
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenNameContainsNonAlphanumericChars() {
         // creating the super vehicle
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
+        vehicle.setOwner(VEHICLE_OWNER);
         // a valid name should contain just alphanumeric chars
-        vehicle.setName("thename!");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setName("an extremely evil name!");
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         vehicle.setColor("red");
 
         // registering the vehicle with an invalid name
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenNameIsEmpty() {
         // creating the vehicle of a shy guy
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
+        vehicle.setOwner(VEHICLE_OWNER);
         // a valid name should contain any alphanumeric char
         vehicle.setName(" ");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         vehicle.setColor("red");
 
         // registering the vehicle with an empty name
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenInitialMileageIsNegative() {
         // creating the vehicle that went backwards
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename!");
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
         // a valid initial mileage is a natural number
         vehicle.setInitialMileage(-50);
-        vehicle.setMake("Toyoba");
+        vehicle.setMake(VEHICLE_MAKE);
         vehicle.setColor("red");
 
         // registering the vehicle with an invalid initial mileage
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenMakeContainsNonAlphanumericChars() {
         // creating a hand-crafted vehicle
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename");
-        vehicle.setInitialMileage(5000);
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
         // a valid make should contain just alphanumeric chars
         vehicle.setMake("me?");
         vehicle.setColor("red");
 
         // registering the vehicle with an invalid make
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test
     public void shouldAcceptMakeAsNullWhenMakeIsEmpty() {
         // creating a vehicle without make
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename");
-        vehicle.setInitialMileage(5000);
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
         // setting the make as empty
         vehicle.setMake(" ");
         vehicle.setColor("red");
 
         // registering the vehicle with an empty make
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
 
         assertThat("the vehicle make should be now null", vehicle.getMake(),
                 is(nullValue()));
@@ -272,15 +251,15 @@ public class VehicleServiceRegistrationTest {
     public void shouldAcceptModelAsNullWhenModelIsEmpty() {
         // creating a vehicle without model
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename");
-        vehicle.setInitialMileage(5000);
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
         // setting the model as empty
-        vehicle.setMake("Toyoba");
+        vehicle.setMake(VEHICLE_MAKE);
         vehicle.setModel(" ");
 
         // registering the vehicle with an empty make
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
 
         assertThat("the vehicle model should be now null", vehicle.getModel(),
                 is(nullValue()));
@@ -290,64 +269,46 @@ public class VehicleServiceRegistrationTest {
     public void shouldThrowAnErrorWhenModelContainsNonAlphanumericChars() {
         // creating the very exclusive vehicle (with a pretty weird model)
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         // a valid model should contain just alphanumeric chars
         vehicle.setModel("Laris%a");
         vehicle.setColor("red");
 
         // registering the vehicle with an invalid model
-        vehicleService.register(vehicle);
-    }
-
-    public void shouldAcceptTheModelAsNullWhenModelIsEmpty() {
-        // creating the vehicle with an empty model
-        final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
-        // setting the model as empty
-        vehicle.setModel(" ");
-        vehicle.setColor("red");
-
-        // registering the vehicle with an empty model
-        vehicleService.register(vehicle);
-
-        assertThat("the vehicle model should be null now", vehicle.getModel(),
-                is(nullValue()));
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenYearIsNegative() {
-        // creating the flinstones' car
+        // creating the Flintstones' car
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         // a valid year should be A.C.
         vehicle.setYear(-1980);
 
         // registering the vehicle with an invalid year
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
     @Test(expected = GazooException.class)
     public void shouldThrowAnErrorWhenYearIsTooLongAgo() {
         // creating the vehicle of 'Back to the future'
         final Vehicle vehicle = new Vehicle();
-        vehicle.setOwner("testowner");
-        vehicle.setName("thename");
-        vehicle.setInitialMileage(5000);
-        vehicle.setMake("Toyoba");
+        vehicle.setOwner(VEHICLE_OWNER);
+        vehicle.setName(VEHICLE_NAME);
+        vehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
+        vehicle.setMake(VEHICLE_MAKE);
         // the first motored vehicle wasn't yet created at this time
         vehicle.setYear(1550);
 
         // registering the vehicle with an invalid year
-        vehicleService.register(vehicle);
+        getVehicleService().register(vehicle);
     }
 
 }

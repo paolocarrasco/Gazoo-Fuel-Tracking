@@ -1,8 +1,11 @@
 package pe.com.abaris.gazoo.services;
 
+import static pe.com.abaris.gazoo.exceptions.ErrorType.ARGUMENTS;
+
 import java.util.HashSet;
 import java.util.Set;
 
+import pe.com.abaris.gazoo.exceptions.GazooException;
 import pe.com.abaris.gazoo.model.Vehicle;
 
 /**
@@ -99,6 +102,17 @@ public class VehicleValidator implements EntityValidator<Vehicle> {
     @Override
     public Set<String> listInvalidProperties() {
         return invalidProperties;
+    }
+
+    @Override
+    public void assertFilledMandatoryArguments(final Vehicle vehicle)
+            throws GazooException {
+        if (vehicle.getOwner() == null || vehicle.getName() == null
+                || vehicle.getInitialMileage() == null) {
+            throw new GazooException(
+                    "Any of the mandatory fields weren't set when registering a vehicle",
+                    ARGUMENTS);
+        }
     }
 
 }
