@@ -27,6 +27,8 @@ public abstract class AbstractVehicleServiceTest {
 
     protected static final String VEHICLE_COLOR = "blue";
 
+    protected static final String ANOTHER_VEHICLE_NAME = "anotherName";
+
     protected static final String ANOTHER_VEHICLE_MODEL = "Trio";
 
     protected static final String ANOTHER_VEHICLE_MAKE = "Revault";

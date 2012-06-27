@@ -19,8 +19,7 @@ public class VehicleServiceUpdateTest extends AbstractVehicleServiceTest {
     @Before
     public void setUp() throws Exception {
         // this is the vehicle to update throughout this test
-        final Vehicle vehicle;
-        vehicle = new Vehicle();
+        final Vehicle vehicle = new Vehicle();
         // setting the mandatory properties
         vehicle.setOwner(VEHICLE_OWNER);
         vehicle.setName(VEHICLE_NAME);
@@ -58,7 +57,7 @@ public class VehicleServiceUpdateTest extends AbstractVehicleServiceTest {
         // this is a vehicle not registered before
         final Vehicle anotherVehicle = new Vehicle();
         anotherVehicle.setOwner(VEHICLE_OWNER);
-        anotherVehicle.setName("differentName");
+        anotherVehicle.setName(ANOTHER_VEHICLE_NAME);
         anotherVehicle.setInitialMileage(VEHICLE_INITIAL_MILEAGE);
         anotherVehicle.setMake(ANOTHER_VEHICLE_MAKE);
 
